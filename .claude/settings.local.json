@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git worktree:*)",
+      "Bash(PORT=4001 pnpm dev:*)",
+      "Bash(PORT=4002 pnpm dev:*)",
+      "Bash(PORT=4003 pnpm dev:*)",
+      "Bash(PORT=4004 pnpm dev:*)",
+      "Bash(ln:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(cmd.exe //c \"taskkill //PID 38768 //F\")",
+      "Bash(powershell.exe -Command \"Stop-Process -Id 38768 -Force\")",
+      "Bash(powershell.exe -Command \"Stop-Process -Id 34248 -Force\")",
+      "Bash(npm run dev:*)",
+      "Bash(claude mcp add:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(npm install:*)",
+      "Bash(timeout:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npx tsc:*)",
+      "Bash(for theme in luxury minimal nature neon-cyber)",
+      "Bash(do rm -rf worktree/$theme/app/cities worktree/$theme/app/community worktree/$theme/app/guide worktree/$theme/components/cities/filter-sidebar.tsx worktree/$theme/components/cities/sort-options.tsx worktree/$theme/components/cities/view-toggle.tsx worktree/$theme/components/cities/city-grid.tsx worktree/$theme/components/cities/city-list.tsx worktree/$theme/components/city-detail)",
+      "Bash(done)",
+      "Bash(npm run build:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(gh issue view:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
