@@ -30,7 +30,9 @@
       "Bash(npx shadcn@latest add:*)",
       "Bash(gh issue view:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(curl:*)",
+      "Bash(tasklist:*)"
     ]
   }
 }
