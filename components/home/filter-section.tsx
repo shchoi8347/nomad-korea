@@ -4,22 +4,22 @@ import { Button } from "@/components/ui/button";
 import type { BudgetRange, Region, Environment, BestSeason } from "@/lib/types";
 
 interface FilterSectionProps {
-  selectedBudget: BudgetRange[];
-  selectedRegions: Region[];
-  selectedEnvironments: Environment[];
-  selectedSeasons: BestSeason[];
-  onBudgetChange: (budget: BudgetRange[]) => void;
-  onRegionChange: (regions: Region[]) => void;
-  onEnvironmentChange: (environments: Environment[]) => void;
-  onSeasonChange: (seasons: BestSeason[]) => void;
+  selectedBudget: BudgetRange | null;
+  selectedRegion: Region | null;
+  selectedEnvironment: Environment | null;
+  selectedSeason: BestSeason | null;
+  onBudgetChange: (budget: BudgetRange | null) => void;
+  onRegionChange: (region: Region | null) => void;
+  onEnvironmentChange: (environment: Environment | null) => void;
+  onSeasonChange: (season: BestSeason | null) => void;
   onReset: () => void;
 }
 
 export function FilterSection({
   selectedBudget,
-  selectedRegions,
-  selectedEnvironments,
-  selectedSeasons,
+  selectedRegion,
+  selectedEnvironment,
+  selectedSeason,
   onBudgetChange,
   onRegionChange,
   onEnvironmentChange,
@@ -33,20 +33,20 @@ export function FilterSection({
   const seasonOptions: BestSeason[] = ["봄", "여름", "가을", "겨울"];
 
   // 필터 토글 핸들러
-  const toggleFilter = <T,>(selected: T[], item: T, onChange: (items: T[]) => void) => {
-    if (selected.includes(item)) {
-      onChange(selected.filter(i => i !== item));
+  const toggleFilter = <T,>(selected: T | null, item: T, onChange: (value: T | null) => void) => {
+    if (selected === item) {
+      onChange(null); // 같은 항목 재클릭 시 선택 해제
     } else {
-      onChange([...selected, item]);
+      onChange(item); // 새로운 항목 선택
     }
   };
 
   // 선택된 필터 개수 계산
   const totalFilters =
-    selectedBudget.length +
-    selectedRegions.length +
-    selectedEnvironments.length +
-    selectedSeasons.length;
+    (selectedBudget ? 1 : 0) +
+    (selectedRegion ? 1 : 0) +
+    (selectedEnvironment ? 1 : 0) +
+    (selectedSeason ? 1 : 0);
 
   return (
     <section className="border-b bg-muted/30 py-6">
@@ -70,7 +70,7 @@ export function FilterSection({
               {budgetOptions.map((budget) => (
                 <Button
                   key={budget}
-                  variant={selectedBudget.includes(budget) ? "default" : "outline"}
+                  variant={selectedBudget === budget ? "default" : "outline"}
                   size="sm"
                   onClick={() => toggleFilter(selectedBudget, budget, onBudgetChange)}
                 >
@@ -87,9 +87,9 @@ export function FilterSection({
               {regionOptions.map((region) => (
                 <Button
                   key={region}
-                  variant={selectedRegions.includes(region) ? "default" : "outline"}
+                  variant={selectedRegion === region ? "default" : "outline"}
                   size="sm"
-                  onClick={() => toggleFilter(selectedRegions, region, onRegionChange)}
+                  onClick={() => toggleFilter(selectedRegion, region, onRegionChange)}
                 >
                   {region}
                 </Button>
@@ -104,9 +104,9 @@ export function FilterSection({
               {environmentOptions.map((env) => (
                 <Button
                   key={env}
-                  variant={selectedEnvironments.includes(env) ? "default" : "outline"}
+                  variant={selectedEnvironment === env ? "default" : "outline"}
                   size="sm"
-                  onClick={() => toggleFilter(selectedEnvironments, env, onEnvironmentChange)}
+                  onClick={() => toggleFilter(selectedEnvironment, env, onEnvironmentChange)}
                 >
                   {env}
                 </Button>
@@ -121,9 +121,9 @@ export function FilterSection({
               {seasonOptions.map((season) => (
                 <Button
                   key={season}
-                  variant={selectedSeasons.includes(season) ? "default" : "outline"}
+                  variant={selectedSeason === season ? "default" : "outline"}
                   size="sm"
-                  onClick={() => toggleFilter(selectedSeasons, season, onSeasonChange)}
+                  onClick={() => toggleFilter(selectedSeason, season, onSeasonChange)}
                 >
                   {season}
                 </Button>
