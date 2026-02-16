@@ -2,7 +2,7 @@ export interface City {
   id: string;
   name: string;
   nameEn: string;
-  region: string;
+  regionDetail: string;
   description: string;
   images: string[];
   overallRating: number;
@@ -28,6 +28,12 @@ export interface City {
   bookmarkCount: number;
   rank?: number;
   tags: string[];
+  likes: number;
+  dislikes: number;
+  budgetRange: BudgetRange;
+  region: Region;
+  environments: Environment[];
+  bestSeason: BestSeason;
 }
 
 export interface Review {
@@ -73,3 +79,24 @@ export interface Cafe {
 
 export type ViewMode = "grid" | "list" | "map";
 export type SortOption = "rating" | "cost-low" | "cost-high" | "internet" | "reviews";
+
+// 필터 관련 타입
+export type BudgetRange = "100만원 이하" | "100~200만원" | "200만원 이상";
+export type Region = "수도권" | "경상도" | "전라도" | "강원도" | "제주도" | "충청도";
+export type Environment = "자연친화" | "도심선호" | "카페작업" | "코워킹 필수";
+export type BestSeason = "봄" | "여름" | "가을" | "겨울";
+
+export interface FilterState {
+  budget: BudgetRange[];
+  regions: Region[];
+  environments: Environment[];
+  seasons: BestSeason[];
+}
+
+// 도시별 좋아요/싫어요 상태
+export interface CityLikeState {
+  cityId: string;
+  likes: number;
+  dislikes: number;
+  userAction: "like" | "dislike" | null;
+}
