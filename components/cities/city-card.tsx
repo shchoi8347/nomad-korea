@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { City } from "@/lib/types";
@@ -17,7 +18,8 @@ interface CityCardProps {
 
 export function CityCard({ city, initialUserAction = null, onLikeUpdate }: CityCardProps) {
   return (
-    <Card className="overflow-hidden transition-all">
+    <Link href={`/cities/${city.id}`}>
+      <Card className="overflow-hidden transition-all hover:scale-105 cursor-pointer">
       <div className="relative aspect-[4/3] overflow-hidden">
         <Image
           src={city.images[0]}
@@ -86,5 +88,6 @@ export function CityCard({ city, initialUserAction = null, onLikeUpdate }: CityC
         </div>
       </CardContent>
     </Card>
+    </Link>
   );
 }
