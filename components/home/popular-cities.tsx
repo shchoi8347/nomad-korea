@@ -21,10 +21,10 @@ export function PopularCities() {
   const [sortBy, setSortBy] = useState<SortOption>("likes-desc");
 
   // 필터 상태 관리
-  const [selectedBudget, setSelectedBudget] = useState<BudgetRange[]>([]);
-  const [selectedRegions, setSelectedRegions] = useState<Region[]>([]);
-  const [selectedEnvironments, setSelectedEnvironments] = useState<Environment[]>([]);
-  const [selectedSeasons, setSelectedSeasons] = useState<BestSeason[]>([]);
+  const [selectedBudget, setSelectedBudget] = useState<BudgetRange | null>(null);
+  const [selectedRegion, setSelectedRegion] = useState<Region | null>(null);
+  const [selectedEnvironment, setSelectedEnvironment] = useState<Environment | null>(null);
+  const [selectedSeason, setSelectedSeason] = useState<BestSeason | null>(null);
 
   // URL 쿼리 파라미터에서 필터 초기화
   useEffect(() => {
@@ -34,16 +34,16 @@ export function PopularCities() {
     const season = searchParams.get("season");
 
     if (budget && (budget === "100만원 이하" || budget === "100~200만원" || budget === "200만원 이상")) {
-      setSelectedBudget([budget as BudgetRange]);
+      setSelectedBudget(budget as BudgetRange);
     }
     if (region && ["수도권", "경상도", "전라도", "강원도", "제주도", "충청도"].includes(region)) {
-      setSelectedRegions([region as Region]);
+      setSelectedRegion(region as Region);
     }
     if (environment && ["자연친화", "도심선호", "카페작업", "코워킹 필수"].includes(environment)) {
-      setSelectedEnvironments([environment as Environment]);
+      setSelectedEnvironment(environment as Environment);
     }
     if (season && ["봄", "여름", "가을", "겨울"].includes(season)) {
-      setSelectedSeasons([season as BestSeason]);
+      setSelectedSeason(season as BestSeason);
     }
   }, [searchParams]);
 
@@ -59,10 +59,10 @@ export function PopularCities() {
 
   // 필터 초기화
   const handleResetFilters = () => {
-    setSelectedBudget([]);
-    setSelectedRegions([]);
-    setSelectedEnvironments([]);
-    setSelectedSeasons([]);
+    setSelectedBudget(null);
+    setSelectedRegion(null);
+    setSelectedEnvironment(null);
+    setSelectedSeason(null);
     setSearchQuery("");
     setSortBy("likes-desc");
   };
@@ -90,27 +90,25 @@ export function PopularCities() {
       );
     }
 
-    // 3. 필터링 (기존 로직)
+    // 3. 필터링
     // 예산 필터
-    if (selectedBudget.length > 0) {
-      filtered = filtered.filter((city) => selectedBudget.includes(city.budgetRange));
+    if (selectedBudget) {
+      filtered = filtered.filter((city) => city.budgetRange === selectedBudget);
     }
 
     // 지역 필터
-    if (selectedRegions.length > 0) {
-      filtered = filtered.filter((city) => selectedRegions.includes(city.region));
+    if (selectedRegion) {
+      filtered = filtered.filter((city) => city.region === selectedRegion);
     }
 
-    // 환경 필터 (배열이므로 일부 포함되면 OK)
-    if (selectedEnvironments.length > 0) {
-      filtered = filtered.filter((city) =>
-        selectedEnvironments.some((env) => city.environments.includes(env))
-      );
+    // 환경 필터
+    if (selectedEnvironment) {
+      filtered = filtered.filter((city) => city.environments.includes(selectedEnvironment));
     }
 
     // 계절 필터
-    if (selectedSeasons.length > 0) {
-      filtered = filtered.filter((city) => selectedSeasons.includes(city.bestSeason));
+    if (selectedSeason) {
+      filtered = filtered.filter((city) => city.bestSeason === selectedSeason);
     }
 
     // 4. 정렬
@@ -133,9 +131,9 @@ export function PopularCities() {
     likeStates,
     searchQuery,
     selectedBudget,
-    selectedRegions,
-    selectedEnvironments,
-    selectedSeasons,
+    selectedRegion,
+    selectedEnvironment,
+    selectedSeason,
     sortBy,
   ]);
 
@@ -159,13 +157,13 @@ export function PopularCities() {
     <section id="cities" className="py-16">
       <FilterSection
         selectedBudget={selectedBudget}
-        selectedRegions={selectedRegions}
-        selectedEnvironments={selectedEnvironments}
-        selectedSeasons={selectedSeasons}
+        selectedRegion={selectedRegion}
+        selectedEnvironment={selectedEnvironment}
+        selectedSeason={selectedSeason}
         onBudgetChange={setSelectedBudget}
-        onRegionChange={setSelectedRegions}
-        onEnvironmentChange={setSelectedEnvironments}
-        onSeasonChange={setSelectedSeasons}
+        onRegionChange={setSelectedRegion}
+        onEnvironmentChange={setSelectedEnvironment}
+        onSeasonChange={setSelectedSeason}
         onReset={handleResetFilters}
       />
 
