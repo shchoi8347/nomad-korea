@@ -60,7 +60,7 @@ export function FilterSection({
           )}
         </div>
 
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {/* 예산 필터 */}
           <div>
             <h4 className="mb-2 text-sm font-semibold">💵 예산</h4>
