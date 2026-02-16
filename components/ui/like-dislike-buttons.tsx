@@ -39,12 +39,18 @@ export function LikeDislikeButtons({
     }
   };
 
-  const handleLike = () => {
+  const handleLike = (e: React.MouseEvent) => {
+    // 링크 이동 방지
+    e.preventDefault();
+    e.stopPropagation();
     // 클릭할 때마다 좋아요 증가 (토글 없음)
     updateState(likes + 1, dislikes, "like");
   };
 
-  const handleDislike = () => {
+  const handleDislike = (e: React.MouseEvent) => {
+    // 링크 이동 방지
+    e.preventDefault();
+    e.stopPropagation();
     // 클릭할 때마다 싫어요 증가 (토글 없음)
     updateState(likes, dislikes + 1, "dislike");
   };
