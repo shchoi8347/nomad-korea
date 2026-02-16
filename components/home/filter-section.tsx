@@ -1,6 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { BudgetRange, Region, Environment, BestSeason } from "@/lib/types";
 
 interface FilterSectionProps {
@@ -32,15 +39,6 @@ export function FilterSection({
   const environmentOptions: Environment[] = ["자연친화", "도심선호", "카페작업", "코워킹 필수"];
   const seasonOptions: BestSeason[] = ["봄", "여름", "가을", "겨울"];
 
-  // 필터 토글 핸들러
-  const toggleFilter = <T,>(selected: T | null, item: T, onChange: (value: T | null) => void) => {
-    if (selected === item) {
-      onChange(null); // 같은 항목 재클릭 시 선택 해제
-    } else {
-      onChange(item); // 새로운 항목 선택
-    }
-  };
-
   // 선택된 필터 개수 계산
   const totalFilters =
     (selectedBudget ? 1 : 0) +
@@ -66,69 +64,93 @@ export function FilterSection({
           {/* 예산 필터 */}
           <div>
             <h4 className="mb-2 text-sm font-semibold">💵 예산</h4>
-            <div className="flex flex-wrap gap-2">
-              {budgetOptions.map((budget) => (
-                <Button
-                  key={budget}
-                  variant={selectedBudget === budget ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleFilter(selectedBudget, budget, onBudgetChange)}
-                >
-                  {budget}
-                </Button>
-              ))}
-            </div>
+            <Select
+              value={selectedBudget ?? "all"}
+              onValueChange={(value) => {
+                onBudgetChange(value === "all" ? null : (value as BudgetRange));
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="예산을 선택하세요" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">전체</SelectItem>
+                {budgetOptions.map((budget) => (
+                  <SelectItem key={budget} value={budget}>
+                    {budget}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* 지역 필터 */}
           <div>
             <h4 className="mb-2 text-sm font-semibold">📍 지역</h4>
-            <div className="flex flex-wrap gap-2">
-              {regionOptions.map((region) => (
-                <Button
-                  key={region}
-                  variant={selectedRegion === region ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleFilter(selectedRegion, region, onRegionChange)}
-                >
-                  {region}
-                </Button>
-              ))}
-            </div>
+            <Select
+              value={selectedRegion ?? "all"}
+              onValueChange={(value) => {
+                onRegionChange(value === "all" ? null : (value as Region));
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="지역을 선택하세요" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">전체</SelectItem>
+                {regionOptions.map((region) => (
+                  <SelectItem key={region} value={region}>
+                    {region}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* 환경 필터 */}
           <div>
             <h4 className="mb-2 text-sm font-semibold">🌿 환경</h4>
-            <div className="flex flex-wrap gap-2">
-              {environmentOptions.map((env) => (
-                <Button
-                  key={env}
-                  variant={selectedEnvironment === env ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleFilter(selectedEnvironment, env, onEnvironmentChange)}
-                >
-                  {env}
-                </Button>
-              ))}
-            </div>
+            <Select
+              value={selectedEnvironment ?? "all"}
+              onValueChange={(value) => {
+                onEnvironmentChange(value === "all" ? null : (value as Environment));
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="환경을 선택하세요" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">전체</SelectItem>
+                {environmentOptions.map((env) => (
+                  <SelectItem key={env} value={env}>
+                    {env}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
           {/* 계절 필터 */}
           <div>
             <h4 className="mb-2 text-sm font-semibold">🍂 최고 계절</h4>
-            <div className="flex flex-wrap gap-2">
-              {seasonOptions.map((season) => (
-                <Button
-                  key={season}
-                  variant={selectedSeason === season ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => toggleFilter(selectedSeason, season, onSeasonChange)}
-                >
-                  {season}
-                </Button>
-              ))}
-            </div>
+            <Select
+              value={selectedSeason ?? "all"}
+              onValueChange={(value) => {
+                onSeasonChange(value === "all" ? null : (value as BestSeason));
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="계절을 선택하세요" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">전체</SelectItem>
+                {seasonOptions.map((season) => (
+                  <SelectItem key={season} value={season}>
+                    {season}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
