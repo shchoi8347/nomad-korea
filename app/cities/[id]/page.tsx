@@ -1,6 +1,5 @@
-import { getCityById } from "@/lib/mock-data";
+import { getCityById } from "@/lib/supabase/queries";
 import { notFound } from "next/navigation";
-import type { City } from "@/lib/types";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -8,7 +7,7 @@ interface PageProps {
 
 export default async function CityDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const city = getCityById(id);
+  const city = await getCityById(id);
 
   if (!city) {
     notFound();

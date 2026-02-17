@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/client";
 
 interface LikeDislikeButtonsProps {
+  cityId: string;
   initialLikes: number;
   initialDislikes: number;
   initialUserAction?: "like" | "dislike" | null;
@@ -15,6 +17,7 @@ interface LikeDislikeButtonsProps {
 }
 
 export function LikeDislikeButtons({
+  cityId,
   initialLikes,
   initialDislikes,
   initialUserAction = null,
@@ -23,6 +26,7 @@ export function LikeDislikeButtons({
   const [likes, setLikes] = useState(initialLikes);
   const [dislikes, setDislikes] = useState(initialDislikes);
   const [userAction, setUserAction] = useState<"like" | "dislike" | null>(initialUserAction);
+  const [isPending, setIsPending] = useState(false);
 
   const updateState = (
     newLikes: number,
@@ -32,27 +36,47 @@ export function LikeDislikeButtons({
     setLikes(newLikes);
     setDislikes(newDislikes);
     setUserAction(newUserAction);
+    if (onUpdate) onUpdate(newLikes, newDislikes, newUserAction);
+  };
 
-    // 부모 컴포넌트에 변경 알림
-    if (onUpdate) {
-      onUpdate(newLikes, newDislikes, newUserAction);
+  const handleAction = async (action: "like" | "dislike") => {
+    if (isPending) return;
+
+    const isSameAction = userAction === action;
+    const newAction = isSameAction ? null : action;
+
+    // 낙관적 업데이트: 즉시 UI 반영
+    let newLikes = likes;
+    let newDislikes = dislikes;
+    if (userAction === "like") newLikes -= 1;
+    if (userAction === "dislike") newDislikes -= 1;
+    if (!isSameAction) {
+      if (action === "like") newLikes += 1;
+      if (action === "dislike") newDislikes += 1;
     }
-  };
+    updateState(newLikes, newDislikes, newAction);
 
-  const handleLike = (e: React.MouseEvent) => {
-    // 링크 이동 방지
-    e.preventDefault();
-    e.stopPropagation();
-    // 클릭할 때마다 좋아요 증가 (토글 없음)
-    updateState(likes + 1, dislikes, "like");
-  };
+    setIsPending(true);
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.rpc("handle_city_like", {
+        p_city_id: cityId,
+        p_old_action: userAction ?? "none",
+        p_new_action: newAction ?? "none",
+      });
 
-  const handleDislike = (e: React.MouseEvent) => {
-    // 링크 이동 방지
-    e.preventDefault();
-    e.stopPropagation();
-    // 클릭할 때마다 싫어요 증가 (토글 없음)
-    updateState(likes, dislikes + 1, "dislike");
+      if (error) {
+        // DB 오류 시 낙관적 업데이트 롤백
+        updateState(likes, dislikes, userAction);
+      } else if (data) {
+        // DB에서 반환된 실제 카운트로 동기화
+        updateState(data.likes, data.dislikes, newAction);
+      }
+    } catch {
+      updateState(likes, dislikes, userAction);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (
@@ -60,7 +84,8 @@ export function LikeDislikeButtons({
       <Button
         variant="ghost"
         size="sm"
-        onClick={handleLike}
+        disabled={isPending}
+        onClick={() => handleAction("like")}
         className={
           userAction === "like"
             ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
@@ -72,7 +97,8 @@ export function LikeDislikeButtons({
       <Button
         variant="ghost"
         size="sm"
-        onClick={handleDislike}
+        disabled={isPending}
+        onClick={() => handleAction("dislike")}
         className={
           userAction === "dislike"
             ? "bg-red-50 text-red-600 hover:bg-red-100"

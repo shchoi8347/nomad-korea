@@ -3,15 +3,17 @@
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { CityCard } from "@/components/cities/city-card";
-import { getTopCities } from "@/lib/mock-data";
 import { FilterSection } from "@/components/home/filter-section";
 import { SearchBar } from "@/components/home/search-bar";
 import { SortDropdown, SortOption } from "@/components/home/sort-dropdown";
 import { Button } from "@/components/ui/button";
-import type { CityLikeState, BudgetRange, Region, Environment, BestSeason } from "@/lib/types";
+import type { City, CityLikeState, BudgetRange, Region, Environment, BestSeason } from "@/lib/types";
 
-export function PopularCities() {
-  const initialCities = getTopCities(10);
+interface PopularCitiesProps {
+  initialCities: City[];
+}
+
+export function PopularCities({ initialCities }: PopularCitiesProps) {
   const searchParams = useSearchParams();
 
   // 검색 상태 관리

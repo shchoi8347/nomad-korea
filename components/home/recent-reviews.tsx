@@ -1,10 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { mockReviews } from "@/lib/mock-data";
+import type { Review } from "@/lib/types";
 
-export function RecentReviews() {
-  const recentReviews = mockReviews.slice(0, 3);
+interface RecentReviewsProps {
+  reviews: Review[];
+}
+
+export function RecentReviews({ reviews }: RecentReviewsProps) {
+  const recentReviews = reviews;
 
   return (
     <section className="bg-muted/40 py-16">
@@ -15,6 +19,12 @@ export function RecentReviews() {
             실제 경험담을 확인하세요
           </p>
         </div>
+
+        {recentReviews.length === 0 && (
+          <p className="text-muted-foreground text-center py-8">
+            아직 작성된 후기가 없습니다. 첫 번째 후기를 남겨보세요!
+          </p>
+        )}
 
         <div className="space-y-4">
           {recentReviews.map((review) => (

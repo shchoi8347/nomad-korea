@@ -7,16 +7,22 @@ import { RecentReviews } from "@/components/home/recent-reviews";
 import { CommunityActivity } from "@/components/home/community-activity";
 import { CTASection } from "@/components/home/cta-section";
 import { NewsletterSection } from "@/components/home/newsletter-section";
+import { getCities, getRecentReviews } from "@/lib/supabase/queries";
 
-export default function Home() {
+export default async function Home() {
+  const [cities, recentReviews] = await Promise.all([
+    getCities(),
+    getRecentReviews(3),
+  ]);
+
   return (
     <>
       <HeroSection />
       <StatsBanner />
-      <PopularCities />
+      <PopularCities initialCities={cities} />
       <CategorySection />
       <SeasonalSection />
-      <RecentReviews />
+      <RecentReviews reviews={recentReviews} />
       <CommunityActivity />
       <CTASection />
       <NewsletterSection />
