@@ -37,7 +37,40 @@
       "Bash(git push:*)",
       "Bash(gh auth:*)",
       "Bash(gh issue create:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(claude mcp:*)",
+      "Bash(npx -y @modelcontextprotocol/server-supabase --version)",
+      "WebSearch",
+      "Bash(npx:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "WebFetch(domain:supabase.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:shinzo.ai)",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__get_advisors",
+      "mcp__supabase__execute_sql",
+      "mcp__supabase__generate_typescript_types",
+      "Bash(cmd /c \"taskkill /PID 8908 /F\")",
+      "Bash(cmd /c:*)",
+      "Bash(powershell -Command:*)",
+      "mcp__supabase__get_logs",
+      "Bash(git -C \"C:\\\\00-study\\\\2026\\\\06-VibeCodingClaude\\\\02-myown\\\\k-nomad\\\\nomad-korea\" branch --show-current)",
+      "Bash(git -C \"C:\\\\00-study\\\\2026\\\\06-VibeCodingClaude\\\\02-myown\\\\k-nomad\\\\nomad-korea\" status)",
+      "Bash(git -C \"C:\\\\00-study\\\\2026\\\\06-VibeCodingClaude\\\\02-myown\\\\k-nomad\\\\nomad-korea\" diff)",
+      "Bash(npm run test:*)",
+      "Bash(node -e:*)",
+      "Bash(node --input-type=module:*)",
+      "Bash(for f in e2e/tests/home/search.spec.ts e2e/tests/home/filter.spec.ts e2e/tests/home/sort.spec.ts e2e/tests/home/like-dislike.spec.ts e2e/tests/cities/city-detail.spec.ts e2e/tests/auth/login.spec.ts e2e/tests/auth/register.spec.ts e2e/tests/auth/signout.spec.ts)",
+      "Bash(do sed -i \"s/test\\\\.skip\\(''\\\\\\(.*\\\\\\)''\\)/test.skip\\(''\\\\1'', async \\(\\) => {}\\)/g\" \"$f\")",
+      "mcp__playwright__browser_navigate",
+      "Bash(PLAYWRIGHT_SKIP_BROWSER_GC=1 npx playwright test:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "playwright"
+  ]
 }

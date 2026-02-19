@@ -59,7 +59,7 @@ export class HomePage {
 
   /** 홈 페이지로 이동 */
   async goto() {
-    await this.page.goto(ROUTES.home)
+    await this.page.goto(ROUTES.home, { waitUntil: 'domcontentloaded' })
   }
 
   /** 검색어 입력 */
