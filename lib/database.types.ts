@@ -351,7 +351,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      handle_city_like: {
+        Args: { p_city_id: string; p_new_action: string; p_old_action: string }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

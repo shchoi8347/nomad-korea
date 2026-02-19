@@ -70,7 +70,8 @@ export function LikeDislikeButtons({
         updateState(likes, dislikes, userAction);
       } else if (data) {
         // DB에서 반환된 실제 카운트로 동기화
-        updateState(data.likes, data.dislikes, newAction);
+        const result = data as { likes: number; dislikes: number };
+        updateState(result.likes, result.dislikes, newAction);
       }
     } catch {
       updateState(likes, dislikes, userAction);
